@@ -1,0 +1,589 @@
+iuliacaraman@DESKTOP-BLPSLVB:~$ sudo ls
+[sudo] password for iuliacaraman:
+sesiune_terminal.txt
+iuliacaraman@DESKTOP-BLPSLVB:~$ sudo -i
+root@DESKTOP-BLPSLVB:~# sudo groupadd -g 1100 sysadmin
+sudo groupadd -g 1200 devops
+sudo groupadd -g 1300 dev_team
+sudo groupadd -g 1400 design_team
+sudo groupadd -g 1500 management
+sudo groupadd -g 1600 techsoft_staffgroupadd: group 'sysadmin' already exists
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo useradd -m -u 1100 -g sysadmin -G devops,techsoft_staff -s /bin/bash admin
+sudo useradd -m -u 1200 -g devops -G techsoft_staff -s /bin/bash elena
+sudo useradd -m -u 1300 -g dev_team -G techsoft_staff -s /bin/bash alice
+sudo useradd -m -u 1301 -g dev_team -G techsoft_staff -s /bin/bash bob
+sudo useradd -m -u 1400 -g design_team -G techsoft_staff -s /bin/bash carol
+sudo useradd -m -u 1500 -g management -G techsoft_staff -s /bin/bash dianauseradd: user 'admin' already exists
+root@DESKTOP-BLPSLVB:~# sudo passwd admin
+New password:
+Retype new password:
+passwd: password updated successfully
+root@DESKTOP-BLPSLVB:~# sudo chage -d 0 admin
+sudo chage -d 0 elena
+sudo chage -d 0 alice
+sudo chage -d 0 bob
+sudo chage -d 0 carol
+sudo chage -d 0 dianaroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo chage -M 90 -W 7 alice
+sudo chage -M 90 -W 7 bob
+sudo chage -M 90 -W 7 carol
+sudo chage -M 90 -W 7 dianaroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# cat /etc/passwd | grep -E "alice|bob|carol|diana|elena|admin"
+admin:x:1100:1100::/home/admin:/bin/bash
+elena:x:1200:1200::/home/elena:/bin/bash
+alice:x:1300:1300::/home/alice:/bin/bash
+bob:x:1301:1300::/home/bob:/bin/bash
+carol:x:1400:1400::/home/carol:/bin/bash
+diana:x:1500:1500::/home/diana:/bin/bash
+root@DESKTOP-BLPSLVB:~# cat /etc/group | grep -E "dev_team|design_team|management|devops|sysadmin|techsoft_staff"
+sysadmin:x:1100:
+devops:x:1200:admin
+dev_team:x:1300:
+design_team:x:1400:
+management:x:1500:
+techsoft_staff:x:1600:admin,elena,alice,bob,carol,diana
+root@DESKTOP-BLPSLVB:~# id alice
+uid=1300(alice) gid=1300(dev_team) groups=1300(dev_team),1600(techsoft_staff)
+root@DESKTOP-BLPSLVB:~# id admin
+uid=1100(admin) gid=1100(sysadmin) groups=1100(sysadmin),1200(devops),1600(techsoft_staff)
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/
+ls: cannot access '/srv/techsoft/': No such file or directory
+root@DESKTOP-BLPSLVB:~# find /srv/techsoft -maxdepth 2 -ls
+find: ‘/srv/techsoft’: No such file or directory
+root@DESKTOP-BLPSLVB:~# sudo mkdir -p /srv/techsoft/dev/src
+sudo mkdir -p /srv/techsoft/dev/database
+sudo mkdir -p /srv/techsoft/design
+sudo mkdir -p /srv/techsoft/management/reports
+sudo mkdir -p /srv/techsoft/management/confidential
+sudo mkdir -p /srv/techsoft/devops/scripts
+sudo mkdir -p /srv/techsoft/devops/configs
+sudo mkdir -p /srv/techsoft/shared
+sudo mkdir -p /srv/techsoft/logsroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo chown root:sysadmin /srv/techsoft
+sudo chown admin:dev_team /srv/techsoft/dev
+sudo chown admin:dev_team /srv/techsoft/dev/src
+sudo chown admin:dev_team /srv/techsoft/dev/database
+sudo chown admin:design_team /srv/techsoft/design
+sudo chown admin:management /srv/techsoft/management
+sudo chown admin:management /srv/techsoft/management/reports
+sudo chown diana:management /srv/techsoft/management/confidential
+sudo chown elena:devops /srv/techsoft/devops
+sudo chown elena:devops /srv/techsoft/devops/scripts
+sudo chown elena:devops /srv/techsoft/devops/configs
+sudo chown admin:techsoft_staff /srv/techsoft/shared
+sudo chown root:sysadmin /srv/techsoft/logsroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/
+total 0
+drwxr-xr-x 1 root sysadmin 512 Apr  5 17:20 .
+drwxr-xr-x 1 root root     512 Apr  5 17:20 ..
+drwxr-xr-x 1 root root     512 Apr  5 17:20 dev
+root@DESKTOP-BLPSLVB:~# find /srv/techsoft -maxdepth 2 -ls
+18295873486207351      0 drwxr-xr-x   1 root     sysadmin      512 Apr  5 17:20 /srv/techsoft
+15481123719349158      0 drwxr-xr-x   1 root     root          512 Apr  5 17:20 /srv/techsoft/dev
+10133099162288059      0 drwxr-xr-x   1 root     root          512 Apr  5 17:20 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# sudo chmod 2750 /srv/techsoft
+sudo chmod 2770 /srv/techsoft/dev
+sudo chmod 2770 /srv/techsoft/dev/src
+sudo chmod 2750 /srv/techsoft/dev/database
+sudo chmod 2770 /srv/techsoft/design
+sudo chmod 2750 /srv/techsoft/management
+sudo chmod 2754 /srv/techsoft/management/reports
+sudo chmod 2700 /srv/techsoft/management/confidential
+sudo chmod 2750 /srv/techsoft/devops
+sudo chmod 2750 /srv/techsoft/devops/scripts
+sudo chmod 2640 /srv/techsoft/devops/configs
+sudo chmod 3775 /srv/techsoft/shared
+sudo chmod 755 /srv/techsoft/logsroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/
+total 0
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:20 .
+drwxr-xr-x 1 root root     512 Apr  5 17:20 ..
+drwxr-xr-x 1 root root     512 Apr  5 17:20 dev
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/dev/
+total 0
+drwxr-xr-x 1 root root     512 Apr  5 17:20 .
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:20 ..
+drwxr-xr-x 1 root root     512 Apr  5 17:20 src
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/shared/
+ls: cannot access '/srv/techsoft/shared/': No such file or directory
+root@DESKTOP-BLPSLVB:~# stat /srv/techsoft/management/confidential/
+stat: cannot statx '/srv/techsoft/management/confidential/': No such file or directory
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/
+total 0
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:20 .
+drwxr-xr-x 1 root root     512 Apr  5 17:20 ..
+drwxr-xr-x 1 root root     512 Apr  5 17:20 dev
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/dev/
+total 0
+drwxr-xr-x 1 root root     512 Apr  5 17:20 .
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:20 ..
+drwxr-xr-x 1 root root     512 Apr  5 17:20 src
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/shared/
+ls: cannot access '/srv/techsoft/shared/': No such file or directory
+root@DESKTOP-BLPSLVB:~# stat /srv/techsoft/management/confidential/
+stat: cannot statx '/srv/techsoft/management/confidential/': No such file or directory
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/shared
+ls: cannot access '/srv/techsoft/shared': No such file or directory
+root@DESKTOP-BLPSLVB:~# ls /srv
+techsoft
+root@DESKTOP-BLPSLVB:~# sudo mkdir -p /srv/techsoft/dev/src
+sudo mkdir -p /srv/techsoft/dev/database
+sudo mkdir -p /srv/techsoft/design
+sudo mkdir -p /srv/techsoft/management/reports
+sudo mkdir -p /srv/techsoft/management/confidential
+sudo mkdir -p /srv/techsoft/devops/scripts
+sudo mkdir -p /srv/techsoft/devops/configs
+sudo mkdir -p /srv/techsoft/shared
+sudo mkdir -p /srv/techsoft/logsroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -R /srv/techsoft
+/srv/techsoft:
+dev
+
+/srv/techsoft/dev:
+src
+
+/srv/techsoft/dev/src:
+root@DESKTOP-BLPSLVB:~# sudo mkdir -p /srv/techsoft/dev/src
+sudo mkdir -p /srv/techsoft/dev/database
+sudo mkdir -p /srv/techsoft/design
+sudo mkdir -p /srv/techsoft/management/reports
+sudo mkdir -p /srv/techsoft/management/confidential
+sudo mkdir -p /srv/techsoft/devops/scripts
+sudo mkdir -p /srv/techsoft/devops/configs
+sudo mkdir -p /srv/techsoft/shared
+sudo mkdir -p /srv/techsoft/logsroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -R /srv/techsoft
+/srv/techsoft:
+dev
+
+/srv/techsoft/dev:
+src
+
+/srv/techsoft/dev/src:
+root@DESKTOP-BLPSLVB:~# sudo mkdir -p /srv/techsoft/{dev/{src,database},design,management/{reports,confidential},devops/{scripts,configs},shared,logs}
+root@DESKTOP-BLPSLVB:~# ls -R /srv/techsoft
+/srv/techsoft:
+design  dev  devops  logs  management  shared
+
+/srv/techsoft/design:
+
+/srv/techsoft/dev:
+database  src
+
+/srv/techsoft/dev/database:
+
+/srv/techsoft/dev/src:
+
+/srv/techsoft/devops:
+configs  scripts
+
+/srv/techsoft/devops/configs:
+
+/srv/techsoft/devops/scripts:
+
+/srv/techsoft/logs:
+
+/srv/techsoft/management:
+confidential  reports
+
+/srv/techsoft/management/confidential:
+
+/srv/techsoft/management/reports:
+
+/srv/techsoft/shared:
+root@DESKTOP-BLPSLVB:~# sudo chmod 2750 /srv/techsoft
+sudo chmod 2770 /srv/techsoft/dev
+sudo chmod 2770 /srv/techsoft/dev/src
+sudo chmod 2750 /srv/techsoft/dev/database
+sudo chmod 2770 /srv/techsoft/design
+sudo chmod 2750 /srv/techsoft/management
+sudo chmod 2754 /srv/techsoft/management/reports
+sudo chmod 2700 /srv/techsoft/management/confidential
+sudo chmod 2750 /srv/techsoft/devops
+sudo chmod 2750 /srv/techsoft/devops/scripts
+sudo chmod 2640 /srv/techsoft/devops/configs
+sudo chmod 3775 /srv/techsoft/shared
+sudo chmod 755 /srv/techsoft/logsroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/
+total 0
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:32 .
+drwxr-xr-x 1 root root     512 Apr  5 17:20 ..
+drwxr-sr-x 1 root sysadmin 512 Apr  5 17:32 design
+drwxr-xr-x 1 root root     512 Apr  5 17:32 dev
+drwxr-sr-x 1 root sysadmin 512 Apr  5 17:32 devops
+drwxr-sr-x 1 root sysadmin 512 Apr  5 17:32 logs
+drwxr-sr-x 1 root sysadmin 512 Apr  5 17:32 management
+drwxr-sr-x 1 root sysadmin 512 Apr  5 17:32 shared
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/dev/
+total 0
+drwxr-xr-x 1 root root     512 Apr  5 17:32 .
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:32 ..
+drwxr-xr-x 1 root root     512 Apr  5 17:32 database
+drwxr-xr-x 1 root root     512 Apr  5 17:20 src
+root@DESKTOP-BLPSLVB:~# ls -la /srv/techsoft/shared/
+total 0
+drwxr-sr-x 1 root sysadmin 512 Apr  5 17:32 .
+drwxr-s--- 1 root sysadmin 512 Apr  5 17:32 ..
+root@DESKTOP-BLPSLVB:~# stat /srv/techsoft/management/confidential/
+  File: /srv/techsoft/management/confidential/
+  Size: 512             Blocks: 0          IO Block: 512    directory
+Device: 0,2     Inode: 1688849861164307  Links: 1
+Access: (2755/drwxr-sr-x)  Uid: (    0/    root)   Gid: ( 1100/sysadmin)
+Access: 2026-04-05 17:32:41.216891600 +0300
+Modify: 2026-04-05 17:32:32.063828400 +0300
+Change: 2026-04-05 17:32:32.063828400 +0300
+ Birth: -
+root@DESKTOP-BLPSLVB:~# sudo touch /srv/techsoft/dev/src/app.py
+sudo touch /srv/techsoft/dev/database/schema.sql
+sudo touch /srv/techsoft/devops/scripts/deploy.sh
+sudo touch /srv/techsoft/devops/scripts/backup.sh
+sudo touch /srv/techsoft/devops/configs/nginx.conf
+sudo touch /srv/techsoft/management/reports/q1_2025.pdf
+sudo touch /srv/techsoft/management/confidential/salarii.xlsx
+sudo touch /srv/techsoft/shared/readme.txtroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo chown alice:dev_team /srv/techsoft/dev/src/app.py
+sudo chmod 664 /srv/techsoft/dev/src/app.py
+
+sudo chown alice:dev_team /srv/techsoft/dev/database/schema.sql
+sudo chmod 640 /srv/techsoft/dev/database/schema.sql
+
+sudo chown elena:devops /srv/techsoft/devops/scripts/deploy.sh
+sudo chmod 750 /srv/techsoft/devops/scripts/deploy.sh
+
+sudo chown elena:devops /srv/techsoft/devops/scripts/backup.sh
+sudo chmod 700 /srv/techsoft/devops/scripts/backup.sh
+
+sudo chown elena:devops /srv/techsoft/devops/configs/nginx.conf
+sudo chmod 640 /srv/techsoft/devops/configs/nginx.conf
+
+sudo chown diana:management /srv/techsoft/management/reports/q1_2025.pdf
+sudo chmod 644 /srv/techsoft/management/reports/q1_2025.pdf
+
+sudo chown diana:management /srv/techsoft/management/confidential/salarii.xlsx
+sudo chmod 600 /srv/techsoft/management/confidential/salarii.xlsx
+
+sudo chown admin:techsoft_staff /srv/techsoft/shared/readme.txt
+sudo chmod 664 /srv/techsoft/shared/readme.txtroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo chmod u+s /srv/techsoft/devops/scripts/deploy.sh
+chmod: cannot access '/srv/techsoft/devops/scripts/deploy.sh': No such file or directory
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/dev/src/
+total 0
+-rw-r--r-- 1 alice dev_team 0 Apr  5 17:36 app.py
+root@DESKTOP-BLPSLVB:~# ls /srv/techsoft/devops/scripts
+root@DESKTOP-BLPSLVB:~# sudo mkdir -p /srv/techsoft/devops/scripts
+root@DESKTOP-BLPSLVB:~# sudo mkdir -p /srv/techsoft/devops/scripts
+root@DESKTOP-BLPSLVB:~# sudo chown elena:devops /srv/techsoft/devops/scripts/deploy.sh
+sudo chmod 750 /srv/techsoft/devops/scripts/deploy.sh
+
+sudo chown elena:devops /srv/techsoft/devops/scripts/backup.sh
+sudo chmod 700 /srv/techsoft/devops/scripts/backup.shchown: cannot access '/srv/techsoft/devops/scripts/deploy.sh': No such file or directory
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo chown elena:devops /srv/techsoft/devops/scripts/deploy.sh
+sudo chmod 750 /srv/techsoft/devops/scripts/deploy.sh
+
+sudo chown elena:devops /srv/techsoft/devops/scripts/backup.sh
+sudo chmod 700 /srv/techsoft/devops/scripts/backup.shchown: cannot access '/srv/techsoft/devops/scripts/deploy.sh': No such file or directory
+root@DESKTOP-BLPSLVB:~# sudo chmod u+s /srv/techsoft/devops/scripts/deploy.sh
+chmod: cannot access '/srv/techsoft/devops/scripts/deploy.sh': No such file or directory
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/
+total 0
+root@DESKTOP-BLPSLVB:~# sudo touch /srv/techsoft/devops/scripts/deploy.sh
+sudo touch /srv/techsoft/devops/scripts/backup.shroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/
+total 0
+-rw-r--r-- 1 root sysadmin 0 Apr  5 17:39 deploy.sh
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/
+total 0
+-rw-r--r-- 1 root sysadmin 0 Apr  5 17:39 deploy.sh
+root@DESKTOP-BLPSLVB:~# sudo chown elena:devops /srv/techsoft/devops/scripts/deploy.sh
+sudo chmod 750 /srv/techsoft/devops/scripts/deploy.sh
+
+sudo chown elena:devops /srv/techsoft/devops/scripts/backup.sh
+sudo chmod 700 /srv/techsoft/devops/scripts/backup.shroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# sudo chmod u+s /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/
+total 0
+-rwSr--r-- 1 elena devops 0 Apr  5 17:39 deploy.sh
+root@DESKTOP-BLPSLVB:~# sudo chmod 750 /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# sudo chmod u+s /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/
+total 0
+-rwsr-x--- 1 elena devops 0 Apr  5 17:39 deploy.sh
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/dev/src/
+total 0
+-rw-r--r-- 1 alice dev_team 0 Apr  5 17:36 app.py
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/
+total 0
+-rwsr-x--- 1 elena devops 0 Apr  5 17:39 deploy.sh
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/management/confidential/
+total 0
+root@DESKTOP-BLPSLVB:~# sudo touch /srv/techsoft/management/confidential/salarii.xlsx
+root@DESKTOP-BLPSLVB:~# sudo chown diana:management /srv/techsoft/management/confidential/salarii.xlsx
+sudo chmod 600 /srv/techsoft/management/confidential/salarii.xlsxroot@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/management/confidential/
+total 0
+-rw-r--r-- 1 diana management 0 Apr  5 17:45 salarii.xlsx
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/management/confidential/
+total 0
+-rw-r--r-- 1 diana management 0 Apr  5 17:45 salarii.xlsx
+root@DESKTOP-BLPSLVB:~# su - alice
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sun Apr  5 17:49:11 EEST 2026
+
+  System load:    0.52      Processes:             18
+  Usage of /home: unknown   Users logged in:       0
+  Memory usage:   37%       IPv4 address for eth0: 192.168.0.150
+  Swap usage:     0%
+
+
+This message is shown once a day. To disable it please create the
+/home/alice/.hushlogin file.
+alice@DESKTOP-BLPSLVB:~$ cat /srv/techsoft/management/confidential/salarii.xlsx
+cat: /srv/techsoft/management/confidential/salarii.xlsx: Permission denied
+alice@DESKTOP-BLPSLVB:~$ touch /srv/techsoft/design/test_alice.psd
+touch: cannot touch '/srv/techsoft/design/test_alice.psd': Permission denied
+alice@DESKTOP-BLPSLVB:~$ touch /srv/techsoft/dev/src/nou_fisier.py
+touch: cannot touch '/srv/techsoft/dev/src/nou_fisier.py': Permission denied
+alice@DESKTOP-BLPSLVB:~$ exit
+logout
+root@DESKTOP-BLPSLVB:~# su - alice -c "touch /srv/techsoft/dev/src/alice_test.py"
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# su - bob -c "touch /srv/techsoft/dev/src/bob_test.py"
+touch: cannot touch '/srv/techsoft/dev/src/bob_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+drwxr-xr-x 1 root root 512 Apr  5 17:36 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# sudo chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+drwxrws--- 1 root root 512 Apr  5 17:36 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# root@DESKTOP-BLPSLVB:~# su - bob -c "touch /srv/techsoft/dev/src/bob_test.py"
+root@DESKTOP-BLPSLVB:~#: command not found
+root@DESKTOP-BLPSLVB:~# touch: cannot touch '/srv/techsoft/dev/src/bob_test.py': Permission denied
+Command 'touch:' not found, did you mean:
+  command 'touch' from deb coreutils (9.4-2ubuntu2)
+Try: apt install <deb name>
+root@DESKTOP-BLPSLVB:~# root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~#: command not found
+root@DESKTOP-BLPSLVB:~# drwxr-xr-x 1 root root 512 Apr  5 17:36 /srv/techsoft/dev/src
+drwxr-xr-x: command not found
+root@DESKTOP-BLPSLVB:~# root@DESKTOP-BLPSLVB:~# sudo chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~#: command not found
+root@DESKTOP-BLPSLVB:~# root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~#: command not found
+root@DESKTOP-BLPSLVB:~# drwxrws--- 1 root root 512 Apr  5 17:36 /srv/techsoft/dev/src
+drwxrws---: command not found
+root@DESKTOP-BLPSLVB:~# sudo chown admin:dev_team /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+drwxrwx--- 1 admin dev_team 512 Apr  5 17:36 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# su - alice -c "touch /srv/techsoft/dev/src/alice_test.py"
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# su - bob -c "touch /srv/techsoft/dev/src/bob_test.py"
+touch: cannot touch '/srv/techsoft/dev/src/bob_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/dev/src/
+total 0
+-rw-r--r-- 1 alice dev_team 0 Apr  5 17:36 app.py
+root@DESKTOP-BLPSLVB:~# sudo chown admin:dev_team /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+drwxrwx--- 1 admin dev_team 512 Apr  5 17:36 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# su - alice -c "touch /srv/techsoft/dev/src/alice_test.py"
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# drwxrwx--- 1 admin dev_team 512 Apr  5 17:36 /srv/techsoft/dev/src
+drwxrwx---: command not found
+root@DESKTOP-BLPSLVB:~# root@DESKTOP-BLPSLVB:~# su - alice -c "touch /srv/techsoft/dev/src/alice_test.py"
+root@DESKTOP-BLPSLVB:~#: command not found
+root@DESKTOP-BLPSLVB:~# touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+Command 'touch:' not found, did you mean:
+  command 'touch' from deb coreutils (9.4-2ubuntu2)
+Try: apt install <deb name>
+root@DESKTOP-BLPSLVB:~# root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~#: command not found
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/dev/src
+drwxrwx--- 1 admin dev_team 512 Apr  5 17:36 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# # Rădăcina și log-urile rămân la root
+root@DESKTOP-BLPSLVB:~# chown root:sysadmin /srv/techsoft /srv/techsoft/logs
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Echipa Dev
+root@DESKTOP-BLPSLVB:~# chown -R admin:dev_team /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Echipa Design
+root@DESKTOP-BLPSLVB:~# chown -R admin:design_team /srv/techsoft/design
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Management (Atenție: confidential e al Dianei)
+root@DESKTOP-BLPSLVB:~# chown -R admin:management /srv/techsoft/management
+root@DESKTOP-BLPSLVB:~# chown diana:management /srv/techsoft/management/confidential
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # DevOps
+root@DESKTOP-BLPSLVB:~# chown -R elena:devops /srv/techsoft/devops
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Shared
+root@DESKTOP-BLPSLVB:~# chown admin:techsoft_staff /srv/techsoft/shared
+root@DESKTOP-BLPSLVB:~# # Rădăcina (750 cu SGID)
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Directoarele de echipă (770 cu SGID pentru scriere comună)
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev /srv/techsoft/dev/src /srv/techsoft/design
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Shared (Sticky Bit + SGID = 3)
+root@DESKTOP-BLPSLVB:~# chmod 3775 /srv/techsoft/shared
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Management Confidential (Doar Diana)
+root@DESKTOP-BLPSLVB:~# chmod 2700 /srv/techsoft/management/confidential
+root@DESKTOP-BLPSLVB:~# # Setăm rădăcina și log-urile pentru administratori
+root@DESKTOP-BLPSLVB:~# chown root:sysadmin /srv/techsoft /srv/techsoft/logs
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Setăm restul directoarelor conform tabelului din cerință
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev/database
+root@DESKTOP-BLPSLVB:~# chown admin:design_team /srv/techsoft/design
+root@DESKTOP-BLPSLVB:~# chown admin:management /srv/techsoft/management
+root@DESKTOP-BLPSLVB:~# chown admin:management /srv/techsoft/management/reports
+root@DESKTOP-BLPSLVB:~# chown diana:management /srv/techsoft/management/confidential
+root@DESKTOP-BLPSLVB:~# chown elena:devops /srv/techsoft/devops
+root@DESKTOP-BLPSLVB:~# chown elena:devops /srv/techsoft/devops/scripts
+root@DESKTOP-BLPSLVB:~# chown elena:devops /srv/techsoft/devops/configs
+root@DESKTOP-BLPSLVB:~# chown admin:techsoft_staff /srv/techsoft/shared
+root@DESKTOP-BLPSLVB:~# # Permisiuni de bază și SGID
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft/dev/database
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/design
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft/management
+root@DESKTOP-BLPSLVB:~# chmod 2754 /srv/techsoft/management/reports
+root@DESKTOP-BLPSLVB:~# chmod 2700 /srv/techsoft/management/confidential
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft/devops
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft/devops/scripts
+root@DESKTOP-BLPSLVB:~# chmod 2640 /srv/techsoft/devops/configs
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Shared are SGID (2) + Sticky Bit (1) = prefixul 3 [cite: 81, 211]
+root@DESKTOP-BLPSLVB:~# chmod 3775 /srv/techsoft/shared
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Log-urile sunt read-only pentru toți [cite: 65, 76]
+root@DESKTOP-BLPSLVB:~# chmod 755 /srv/techsoft/logs
+root@DESKTOP-BLPSLVB:~# # Creăm fișierele (dacă nu există deja)
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/dev/src/app.py
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/dev/database/schema.sql
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/devops/scripts/backup.sh
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/devops/configs/nginx.conf
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/management/reports/q1_2025.pdf
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/management/confidential/salarii.xlsx
+root@DESKTOP-BLPSLVB:~# touch /srv/techsoft/shared/readme.txt
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Aplicăm permisiunile specifice pe fișiere [cite: 105]
+root@DESKTOP-BLPSLVB:~# chown alice:dev_team /srv/techsoft/dev/src/app.py && chmod 664 /srv/techsoft/dev/src/app.py
+root@DESKTOP-BLPSLVB:~# chown alice:dev_team /srv/techsoft/dev/database/schema.sql && chmod 640 /srv/techsoft/dev/database/schema.sql
+root@DESKTOP-BLPSLVB:~# chown elena:devops /srv/techsoft/devops/scripts/deploy.sh && chmod 750 /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# chown elena:devops /srv/techsoft/devops/scripts/backup.sh && chmod 700 /srv/techsoft/devops/scripts/backup.sh
+root@DESKTOP-BLPSLVB:~# chown elena:devops /srv/techsoft/devops/configs/nginx.conf && chmod 640 /srv/techsoft/devops/configs/nginx.conf
+root@DESKTOP-BLPSLVB:~# chown diana:management /srv/techsoft/management/reports/q1_2025.pdf && chmod 644 /srv/techsoft/management/reports/q1_2025.pdf
+root@DESKTOP-BLPSLVB:~# chown diana:management /srv/techsoft/management/confidential/salarii.xlsx && chmod 600 /srv/techsoft/management/confidential/salarii.xlsx
+root@DESKTOP-BLPSLVB:~# chown admin:techsoft_staff /srv/techsoft/shared/readme.txt && chmod 664 /srv/techsoft/shared/readme.txt
+root@DESKTOP-BLPSLVB:~#
+root@DESKTOP-BLPSLVB:~# # Bonus SUID pe deploy.sh [cite: 107]
+root@DESKTOP-BLPSLVB:~# chmod u+s /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# su - alice
+alice@DESKTOP-BLPSLVB:~$ cat /srv/techsoft/management/confidential/salarii.xlsx
+cat: /srv/techsoft/management/confidential/salarii.xlsx: Permission denied
+alice@DESKTOP-BLPSLVB:~$ touch /srv/techsoft/dev/src/test_nou.p
+touch: cannot touch '/srv/techsoft/dev/src/test_nou.p': Permission denied
+alice@DESKTOP-BLPSLVB:~$ su - alice -c "touch /srv/techsoft/dev/src/alice_test.py"
+Password:
+su: Authentication failure
+alice@DESKTOP-BLPSLVB:~$ su - alice -c "touch /srv/techsoft/shared/proiect_alice.txt"
+Password:
+su: Authentication failure
+alice@DESKTOP-BLPSLVB:~$ su - alice -c "touch /srv/techsoft/shared/proiect_alice.txt"
+Password:
+su: Authentication failure
+alice@DESKTOP-BLPSLVB:~$ sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+alice is not in the sudoers file.
+alice@DESKTOP-BLPSLVB:~$ # 1. Alice creează un fișier (comanda este trimisă prin root, deci nu cere parolă)
+alice@DESKTOP-BLPSLVB:~$ sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+alice is not in the sudoers file.
+alice@DESKTOP-BLPSLVB:~$
+alice@DESKTOP-BLPSLVB:~$ # 2. Bob creează un fișier
+alice@DESKTOP-BLPSLVB:~$ sudo -u bob touch /srv/techsoft/dev/src/bob_test.py
+[sudo] password for alice:
+Sorry, try again.
+[sudo] password for alice:
+Sorry, try again.
+[sudo] password for alice:
+sudo: 3 incorrect password attempts
+alice@DESKTOP-BLPSLVB:~$ exit
+logout
+root@DESKTOP-BLPSLVB:~# # Alice creează fișierul prin intermediul root
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+
+# Bob creează fișierul prin intermediul root
+sudo -u bob touch /srv/techsoft/dev/src/bob_test.py
+
+# Verificarea finală pentru raport
+ls -l /srv/techsoft/dev/src/touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# sudo -u bob touch /srv/techsoft/dev/src/bob_test.py
+touch: cannot touch '/srv/techsoft/dev/src/bob_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# sudo -u bob touch /srv/techsoft/dev/src/bob_test.py
+touch: cannot touch '/srv/techsoft/dev/src/bob_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# chown root:sysadmin /srv/techsoft
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft
+root@DESKTOP-BLPSLVB:~# usermod -aG dev_team alice
+root@DESKTOP-BLPSLVB:~# usermod -aG dev_team bob
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# sudo -u bob touch /srv/techsoft/dev/src/bob_test.py
+touch: cannot touch '/srv/techsoft/dev/src/bob_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# chown root:sysadmin /srv/techsoft
+root@DESKTOP-BLPSLVB:~# chmod 2750 /srv/techsoft
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chown admin:dev_team /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# usermod -aG dev_team alice
+root@DESKTOP-BLPSLVB:~# usermod -aG dev_team bob
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+touch: cannot touch '/srv/techsoft/dev/src/alice_test.py': Permission denied
+root@DESKTOP-BLPSLVB:~# chown root:sysadmin /srv/techsoft
+root@DESKTOP-BLPSLVB:~# chmod 751 /srv/techsoft
+root@DESKTOP-BLPSLVB:~# chown -R admin:dev_team /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod -R 770 /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev
+root@DESKTOP-BLPSLVB:~# chmod 2770 /srv/techsoft/dev/src
+root@DESKTOP-BLPSLVB:~# usermod -aG dev_team alice
+root@DESKTOP-BLPSLVB:~# usermod -aG dev_team bob
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/dev/src/alice_test.py
+root@DESKTOP-BLPSLVB:~# sudo -u bob touch /srv/techsoft/dev/src/bob_test.py
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/dev/src/
+total 0
+-rw-r--r-- 1 alice dev_team 0 Apr  5 18:12 alice_test.py
+-rwxrwx--- 1 admin dev_team 0 Apr  5 17:58 app.py
+-rw-r--r-- 1 bob   dev_team 0 Apr  5 18:13 bob_test.py
+root@DESKTOP-BLPSLVB:~# sudo -u alice touch /srv/techsoft/shared/proiect_alice.txt
+root@DESKTOP-BLPSLVB:~# sudo -u bob rm /srv/techsoft/shared/proiect_alice.txt
+rm: remove write-protected regular empty file '/srv/techsoft/shared/proiect_alice.txt'? ls -ld /srv/techsoft/shared
+root@DESKTOP-BLPSLVB:~# ls -ld /srv/techsoft/shared
+drwxrwsr-t 1 admin techsoft_staff 512 Apr  5 18:14 /srv/techsoft/shared
+root@DESKTOP-BLPSLVB:~# ls -l /srv/techsoft/devops/scripts/deploy.sh
+-rwsr-x--- 1 elena devops 0 Apr  5 17:58 /srv/techsoft/devops/scripts/deploy.sh
+root@DESKTOP-BLPSLVB:~# sudo -u diana cat /srv/techsoft/management/confidential/salarii.xlsx
+root@DESKTOP-BLPSLVB:~# sudo -u bob cat /srv/techsoft/management/confidential/salarii.xlsx
+cat: /srv/techsoft/management/confidential/salarii.xlsx: Permission denied
+root@DESKTOP-BLPSLVB:~# cat /srv/techsoft/management/confidential/salarii.xlsx
+> history | tail -n 200 > sesiune_terminal.txt
